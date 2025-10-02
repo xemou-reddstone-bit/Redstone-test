@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mes Recherches Redstone</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: #1a1a1a;
+    color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    background: #ff5722;
+    text-align: center;
+    padding: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+    animation: slideDown 1s ease;
+  }
+  @keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  .section {
+    margin-bottom: 2rem;
+    background: #2c2c2c;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+  }
+  .section:hover { transform: scale(1.02); }
+  h2 { color: #ff9800; }
+  img {
+    max-width: 100%;
+    border-radius: 8px;
+    display: block;
+    margin: 1rem 0;
+    transition: transform 0.3s ease;
+  }
+  img:hover { transform: scale(1.05); }
+  .text-zone {
+    background: #1f1f1f;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+  /* Animation Redstone */
+  .torch {
+    display: inline-block;
+    width: 20px;
+    height: 50px;
+    margin: 5px;
+    background: #ff0000;
+    border-radius: 10px;
+    animation: blink 1s infinite;
+  }
+  @keyframes blink {
+    0%, 50%, 100% { background: #ff0000; }
+    25%, 75% { background: #550000; }
+  }
+  /* App Redstone */
+  .redstone-app {
+    background: #111;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 60px);
+    grid-gap: 5px;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  .cell {
+    width: 60px;
+    height: 60px;
+    background: #333;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #f0f0f0;
+    transition: 0.3s;
+  }
+  .cell.on { background: #ff0000; }
+  button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    background: #ff9800;
+    color: #111;
+  }
+</style>
+</head>
+<body>
+
+<header>Mes Recherches Redstone</header>
+
+<div class="container">
+
+  <!-- Présentation -->
+  <div class="section">
+    <h2>Présentation</h2>
+    <div class="text-zone">
+      <p>Bienvenue sur mon site dédié à mes recherches en Redstone sur Minecraft. Ici, je partage mes projets, schémas et tutoriels pour aider la communauté.</p>
+    </div>
+  </div>
+
+  <!-- Images / Schémas -->
+  <div class="section">
+    <h2>Images / Schémas</h2>
+    <img src="https://via.placeholder.com/800x400?text=Ton+sch%C3%A9ma+ici" alt="Exemple Redstone">
+    <img src="https://via.placeholder.com/800x400?text=Autre+sch%C3%A9ma" alt="Exemple Redstone">
+  </div>
+
+  <!-- Animation Redstone -->
+  <div class="section">
+    <h2>Animation Redstone</h2>
+    <div>
+      <span class="torch"></span>
+      <span class="torch"></span>
+      <span class="torch"></span>
+      <span class="torch"></span>
+      <span class="torch"></span>
+    </div>
+  </div>
+
+  <!-- App Redstone -->
+  <div class="section">
+    <h2>Simulateur Redstone</h2>
+    <div class="redstone-app">
+      <p>Clique sur les cases pour changer l'état des entrées et teste la logique :</p>
+      <div class="grid" id="grid">
+        <div class="cell" id="input1">0</div>
+        <div class="cell" id="input2">0</div>
+        <div class="cell" id="output">0</div>
+      </div>
+      <button id="and">Appliquer AND</button>
+      <button id="or">Appliquer OR</button>
+      <button id="not">Appliquer NOT sur Input1</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const input1 = document.getElementById('input1');
+const input2 = document.getElementById('input2');
+const output = document.getElementById('output');
+
+function toggle(cell){
+  if(cell.textContent === '0'){ cell.textContent='1'; cell.classList.add('on'); }
+  else{ cell.textContent='0'; cell.classList.remove('on'); }
+}
+
+input1.addEventListener('click', ()=>toggle(input1));
+input2.addEventListener('click', ()=>toggle(input2));
+
+document.getElementById('and').addEventListener('click', ()=>{
+  const val = (input1.textContent==='1' && input2.textContent==='1') ? '1':'0';
+  output.textContent = val;
+  output.classList.toggle('on', val==='1');
+});
+
+document.getElementById('or').addEventListener('click', ()=>{
+  const val = (input1.textContent==='1' || input2.textContent==='1') ? '1':'0';
+  output.textContent = val;
+  output.classList.toggle('on', val==='1');
+});
+
+document.getElementById('not').addEventListener('click', ()=>{
+  const val = (input1.textContent==='1') ? '0':'1';
+  output.textContent = val;
+  output.classList.toggle('on', val==='1');
+});
+</script>
+
+</body>
+</html>
